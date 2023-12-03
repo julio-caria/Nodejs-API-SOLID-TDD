@@ -83,3 +83,14 @@ export class Appointment {
 
 Nessa etapa, já conseguimos realizar a construção de um teste, para isso podemos adicionar um arquivo com extensão `.spec.ts` ou `.test.ts`.
 Dependendo de gosto e arquitetura, podemos estruturar nosso projeto com os arquivos de test próximos ao arquivo de implementação (no mesmo diretório) ou adicionar um novo diretório como `src/test/arquivo.spec.ts`.
+
+## Iniciando com testes
+
+O node, a partir da versão v0.18.0 possui suporte nativo à testes. Porém na aula não foi utilizado essa ferramenta e sim o vitest, este possui suporte ao ESM, TypeScript e JSX.
+
+Para realizar sua instalação, basta executar o seguinte comando no CLI:
+
+```bash
+npm i vitest -D
+```
+
