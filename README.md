@@ -94,3 +94,113 @@ Para realizar sua instalação, basta executar o seguinte comando no CLI:
 npm i vitest -D
 ```
 
+Agora, você precisará criar um arquivo com o nome `vite.config.ts`, nele aplicar as configurações.
+
+```ts
+import { defineConfig } from 'vitest/config'
+
+export default defineConfig({
+  test: {}
+})
+```
+
+Já em nosso arquivo `appointment.spec.ts`, podemos aplicar as funções para testes, sendo elas: 
+
+```ts
+import { Appointment } from './appointment';
+import { expect, test } from 'vitest'
+
+test('create an appointment', () => {
+  const startsAt = new Date();
+  const endsAt = new Date();
+
+  endsAt.setDate(endsAt.getDate() + 1)
+
+  const appointment = new Appointment({
+    customer: 'John Doe',
+    startsAt,
+    endsAt,
+  })
+
+  expect(appointment).toBeInstanceOf(Appointment)
+  expect(appointment.customer).toEqual('John Doe')
+})
+
+test('cannot create an appointment with end date before start date', () => {
+  const startsAt = new Date();
+  const endsAt = new Date();
+
+  endsAt.setDate(endsAt.getDate() - 1)
+
+  expect(() => {
+    return new Appointment({
+      customer: 'John Doe',
+      startsAt,
+      endsAt,
+    })
+  }).toThrow()
+})
+```
+
+- `test():` Indica a intenção teste, o primeiro parâmetro é o intuito definido para a criação daquele teste, já o segundo uma arrow function, executada localmente, onde é passado bloco de código para execução.
+- `expect()`: Essa função contém o que é esperado com aquele teste, o que deve ser retornado.
+
+## Casos de uso
+
+Crie uma pasta com o nome de `use-cases`, vale lembrar que esse nome em questão, trata-se de uma seleção pessoal.
+
+O arquivo de caso de uso pode armazenar uma classe ou um método (Função).
+
+Todo caso de uso possui, apenas, uma única funcionalidade, uma entrada e uma saída (Request e Response).
+
+Arquivo `create-appointment.ts`
+
+```ts
+import { Appointment } from './../entities/appointment';
+
+interface CreateAppointmentRequest {
+  customer: string,
+  startsAt: Date,
+  endsAt: Date,
+}
+
+type CreateAppointmentResponse = Appointment
+
+export class CreateAppointment {
+  async execute({ customer, startsAt, endsAt }: CreateAppointmentRequest): Promise<CreateAppointmentResponse> {
+    const appointment = new Appointment({
+      customer, 
+      startsAt,
+      endsAt,
+    })
+
+    return appointment
+  }  
+}
+```
+
+Arquivo `create-appointment.spec.ts`:
+
+```ts
+import { describe, expect, it } from "vitest"
+import { CreateAppointment } from "./create-appointment"
+import { Appointment } from "../entities/appointment"
+
+describe('Create Appointment', () => {
+  it('should be able to create an appointment', () => {
+    const createAppointment = new CreateAppointment()
+    // SUT => System under Test
+
+    const startsAt = new Date()
+    const endsAt = new Date()
+
+    endsAt.setDate(endsAt.getDate() + 1)
+
+    expect(createAppointment.execute({
+      customer: 'John Doe',
+      startsAt,
+      endsAt
+    })).resolves.toBeInstanceOf(Appointment)
+  })
+})
+```
