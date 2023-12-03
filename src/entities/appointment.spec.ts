@@ -44,6 +44,3 @@ test('cannot create an appointment with start date before now', () => {
     })
   }).toThrow()
 })
-
-
-// 45:51

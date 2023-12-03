@@ -204,3 +204,12 @@ describe('Create Appointment', () => {
   })
 })
 ```
+
+## Regras de negócio
+
+As regras de negócio podem ser validadas em dois momentos: nos casos de uso ou nas entidades.
+
+Para saber se uma regra de negócio deve ser aplicada nas entidades ou nos casos de uso, deve-se pensar em:
+
+1. É necessário saber informações apenas daquela entidade (Se sim, a regra é aplicada na entidade).
+2. Se for necesário saber informações de várias entidades, a regra de negócio deverá ser aplicada em nosso caso de uso.
